@@ -1,3 +1,4 @@
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import page_object.LoginPage;
@@ -9,7 +10,6 @@ public class RegisterUserTest extends BaseTest{
 
     @Test
     public void registerUserSuccess(){
-        setDriver();
         MainPage mainPage = new MainPage(getDriver());
         mainPage.clickOnPersonalAccount();
         LoginPage loginPage = new LoginPage(getDriver());
@@ -21,7 +21,6 @@ public class RegisterUserTest extends BaseTest{
 
     @Test
     public void registerUserWithIncorrectPassword(){
-        setDriver();
         MainPage mainPage = new MainPage(getDriver());
         mainPage.clickOnPersonalAccount();
         LoginPage loginPage = new LoginPage(getDriver());

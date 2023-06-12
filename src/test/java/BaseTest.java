@@ -19,13 +19,19 @@ public class BaseTest {
     private final String password = "123456";
     private final String name = "Александр";
     private final String incorrectPassword = "12345";
+    private final String yandexBrowser = "Yandex";
+    private final String chromeBrowser = "Chrome";
 
     private WebDriver driver;
     private UserAPI userAPI = new UserAPI();
     private final LoginUserPOJO loginUserPOJO = new LoginUserPOJO(email, password);
+    private final LoginUserPOJO loginIncorrectUserPOJO = new LoginUserPOJO(email, incorrectPassword);
     private final RegisterUserPOJO registerUserPOJO = new RegisterUserPOJO(email, password, name);
 
-    public void setDriver(){
+    public void setDriver(String browser){
+        if(browser.equals("Yandex")){
+            System.setProperty("webdriver.chrome.driver", "C:/Study/QA_Automation_Java/yandexdriver.exe");
+        }
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--remote-allow-origins=*");
         driver = new ChromeDriver(options);
@@ -36,12 +42,18 @@ public class BaseTest {
 
     @Before
     public void setUp() {
-        RestAssured.baseURI = "https://stellarburgers.nomoreparties.site/";
+        RestAssured.baseURI = MAIN_PAGE;
+        setDriver(getChromeBrowser());
     }
 
     @After
     public void cleanUp(){
         Response response = getUserAPI().loginUser(getLoginUserPOJO());
+        if(response.jsonPath().get("success").equals(true)){
+            getUserAPI().logout(response.jsonPath().get("accessToken"));
+            getUserAPI().deleteUser(response.jsonPath().get("accessToken"));
+        }
+        response = getUserAPI().loginUser(getLoginIncorrectUserPOJO());
         if(response.jsonPath().get("success").equals(true)){
             getUserAPI().logout(response.jsonPath().get("accessToken"));
             getUserAPI().deleteUser(response.jsonPath().get("accessToken"));
@@ -79,5 +91,17 @@ public class BaseTest {
 
     public RegisterUserPOJO getRegisterUserPOJO() {
         return registerUserPOJO;
+    }
+
+    public String getYandexBrowser() {
+        return yandexBrowser;
+    }
+
+    public String getChromeBrowser() {
+        return chromeBrowser;
+    }
+
+    public LoginUserPOJO getLoginIncorrectUserPOJO() {
+        return loginIncorrectUserPOJO;
     }
 }

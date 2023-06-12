@@ -12,7 +12,6 @@ public class LoginUserTest extends BaseTest{
 
     @Test
     public void successLoginOnEnterAccountButton(){
-        setDriver();
         MainPage mainPage = new MainPage(getDriver());
         mainPage.clickOnEnterAccountButton();
         LoginPage loginPage = new LoginPage(getDriver());
@@ -24,7 +23,6 @@ public class LoginUserTest extends BaseTest{
 
     @Test
     public void successLoginOnClickPersonalAccount(){
-        setDriver();
         MainPage mainPage = new MainPage(getDriver());
         mainPage.clickOnPersonalAccount();
         LoginPage loginPage = new LoginPage(getDriver());
@@ -36,7 +34,6 @@ public class LoginUserTest extends BaseTest{
 
     @Test
     public void successLoginOnClickEnterButtonOnRegisterPage(){
-        setDriver();
         MainPage mainPage = new MainPage(getDriver());
         mainPage.clickOnPersonalAccount();
         LoginPage loginPage = new LoginPage(getDriver());
@@ -51,7 +48,6 @@ public class LoginUserTest extends BaseTest{
 
     @Test
     public void successLoginOnForgotPasswordPage(){
-        setDriver();
         MainPage mainPage = new MainPage(getDriver());
         mainPage.clickOnPersonalAccount();
         LoginPage loginPage = new LoginPage(getDriver());
