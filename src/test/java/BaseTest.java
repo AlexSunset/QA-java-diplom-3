@@ -6,11 +6,11 @@ import io.restassured.response.Response;
 import org.junit.After;
 import org.junit.Before;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
+import page_object.BrowserTypeSetup;
 
 import java.time.Duration;
 
+import static page_object.BrowserTypeSetup.browserDriverSetUp;
 import static page_object.PageConstants.MAIN_PAGE;
 
 public class BaseTest {
@@ -19,8 +19,6 @@ public class BaseTest {
     private final String password = "123456";
     private final String name = "Александр";
     private final String incorrectPassword = "12345";
-    private final String yandexBrowser = "Yandex";
-    private final String chromeBrowser = "Chrome";
 
     private WebDriver driver;
     private UserAPI userAPI = new UserAPI();
@@ -28,13 +26,8 @@ public class BaseTest {
     private final LoginUserPOJO loginIncorrectUserPOJO = new LoginUserPOJO(email, incorrectPassword);
     private final RegisterUserPOJO registerUserPOJO = new RegisterUserPOJO(email, password, name);
 
-    public void setDriver(String browser){
-        if(browser.equals("Yandex")){
-            System.setProperty("webdriver.chrome.driver", "C:/Study/QA_Automation_Java/yandexdriver.exe");
-        }
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--remote-allow-origins=*");
-        driver = new ChromeDriver(options);
+    public void setDriver(){
+        driver = browserDriverSetUp();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         driver.get(MAIN_PAGE);
         driver.manage().window().maximize();
@@ -43,7 +36,7 @@ public class BaseTest {
     @Before
     public void setUp() {
         RestAssured.baseURI = MAIN_PAGE;
-        setDriver(getChromeBrowser());
+        setDriver();
     }
 
     @After
@@ -91,14 +84,6 @@ public class BaseTest {
 
     public RegisterUserPOJO getRegisterUserPOJO() {
         return registerUserPOJO;
-    }
-
-    public String getYandexBrowser() {
-        return yandexBrowser;
-    }
-
-    public String getChromeBrowser() {
-        return chromeBrowser;
     }
 
     public LoginUserPOJO getLoginIncorrectUserPOJO() {
